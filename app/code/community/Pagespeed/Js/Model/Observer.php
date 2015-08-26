@@ -86,7 +86,7 @@ class Pagespeed_Js_Model_Observer
     public function parseJsToBottom(Varien_Event_Observer $observer)
     {
         $timeStart = microtime(true);
-		$_timeStamp='':
+		$_timeStamp='';
 
         // Step 1
         $helper = Mage::helper('pagespeed_js');

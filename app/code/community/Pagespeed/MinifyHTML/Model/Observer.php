@@ -10,6 +10,7 @@
  * http://blog.gaiterjones.com/dropdev/magento/LICENSE.txt
  *
  * @category    PAJ
+ * @author		PAJ <modules@gaiterjones.com>
  * @package     PAJ_MinifyHTML
  * @copyright   Copyright (c) 2015 PAJ
  * @license     http://blog.gaiterjones.com/dropdev/magento/LICENSE.txt  The MIT License (MIT)
@@ -17,34 +18,32 @@
 
 class Pagespeed_MinifyHTML_Model_Observer
 {
-	protected $_timerstart=false;
-	
+
     public function alterOutput($observer)
     {
-		//if (file_exists(Mage::getModuleDir('etc', 'Lesti_Fpc'))) {return;}
-		//if (Mage::helper('core')->isModuleEnabled('Lesti_Fpc')) {return;}
-		//Mage::log('PAJ_MinifyHTML_Model_Observer::observer '. time());
+		$helper = Mage::helper('minifyhtml/data');
 		
+		if (!$helper->isActive()){ return; }
 		
 		// retrieve html body
 		$response = $observer->getResponse();       
 		$html     = $response->getBody();
+
 		
 		// do not minify json
 		if(substr($html, 0, 1) === '{') { return; }
-		
-		if (Mage::helper('minifyhtml/data')->isActive())
-		{	
-			$this->timer();
-			$_timeStamp='';
-			
-		
-			// minify
-			$html=Pagespeed_MinifyHTML_Model_Minify::minify($html,array('jsCleanComments' => true));
-			$_timeStamp="\n".'<!-- +MIN '. date("d-m-Y H:i:s"). ' '. $this->timer(false). ' -->';
-			// send Response
-			$response->setBody($html.$_timeStamp);			
-		}
+
+		$timeStart = microtime(true);
+
+		// minify
+		$html=Pagespeed_MinifyHTML_Model_Minify::minify($html,array('jsCleanComments' => true));
+		// timestamp
+		$_timeStamp="\n".'<!-- +PS MIN_HTML '. date("d-m-Y H:i:s"). ' '. round(((microtime(true) - $timeStart) * 1000)). ' -->';
+		// send Response
+		$response->setBody($html.$_timeStamp);
+
+		//Mage::log(round(((microtime(true) - $timeStart) * 1000)) . ' ms taken to minify html');			
+
     }
 	
 	protected function sanitize($_html) {
@@ -52,25 +51,4 @@ class Pagespeed_MinifyHTML_Model_Observer
 		return (preg_replace('#\R+#', ' ', $_html));
 	}
 
-	protected function timer($_start=true)
-	{
-		if ($_start)
-		{
-			// start
-			$time = microtime();
-			$time = explode(' ', $time);
-			$time = $time[1] + $time[0];
-			$this->_timerstart=$time;
-			
-		} else {
-			// stop
-			$time = microtime();
-			$time = explode(' ', $time);
-			$time = $time[1] + $time[0];
-			$finish = $time;
-			$total_time = round(($finish - $this->_timerstart), 4);
-			return ($total_time);
-		}
-	
-	}	
 }
