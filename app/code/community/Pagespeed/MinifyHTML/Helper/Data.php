@@ -22,7 +22,7 @@ class Pagespeed_MinifyHTML_Helper_Data extends Mage_Core_Helper_Abstract
 	 /**
      * Configuration paths
      */
-    const PAGESPEED_MINIFYHTML_ENABLED = 'minifyhtml/general/enable_minify';
+    const PAGESPEED_MINIFYHTML_ENABLED = 'pagespeed/minifyhtml/enable_minify';
 	
 	
     public function isEnabled()
