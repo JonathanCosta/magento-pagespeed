@@ -21,9 +21,9 @@ class Pagespeed_MinifyHTML_Model_Observer
 
     public function alterOutput($observer)
     {
-		$helper = Mage::helper('minifyhtml/data');
+		$helper = Mage::helper('minifyhtml');
 		
-		if (!$helper->isActive()){ return; }
+		if (!$helper->isEnabled()){ return; }
 		
 		// retrieve html body
 		$response = $observer->getResponse();       
@@ -38,7 +38,7 @@ class Pagespeed_MinifyHTML_Model_Observer
 		// minify
 		$html=Pagespeed_MinifyHTML_Model_Minify::minify($html,array('jsCleanComments' => true));
 		// timestamp
-		$_timeStamp="\n".'<!-- +PS MIN_HTML '. date("d-m-Y H:i:s"). ' '. round(((microtime(true) - $timeStart) * 1000)). ' -->';
+		$_timeStamp="\n".'<!-- +PS MIN_HTML '. date("d-m-Y H:i:s"). ' '. round(((microtime(true) - $timeStart) * 1000)). 'ms -->';
 		// send Response
 		$response->setBody($html.$_timeStamp);
 
