@@ -18,7 +18,7 @@
 -->
 <config>
     <sections>
-        <minifyhtml translate="label" module="minifyhtml">
+        <pagespeed translate="label" module="minifyhtml">
             <label>Pagespeed</label>
             <tab>advanced</tab>
             <sort_order>990</sort_order>
@@ -55,6 +55,6 @@
 						</fields>						
 					</general>
 				</groups>
-        </minifyhtml>
+        </pagespeed>
     </sections>
  </config>
