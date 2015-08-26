@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @package Pagespeed
+
+ */
+-->
+<config>
+    <modules>
+	    <Pagespeed_Js>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Pagespeed_Js>
+        <Pagespeed_Css>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Pagespeed_Css>		
+        <Pagespeed_MinifyHTML>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Pagespeed_MinifyHTML>
+    </modules>
+</config>

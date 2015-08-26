@@ -15,6 +15,7 @@ class Pagespeed_Js_Model_Observer
      * @const string
      */
     const HTML_TAG_BODY = '</body>';
+	const SCRIPT_EXCLUDE_TAG='exclude_this';
 
     /**
      * Will finally contain all js tags to move.
@@ -55,7 +56,9 @@ class Pagespeed_Js_Model_Observer
      */
     protected function isHitExcluded($hit)
     {
-        $c = 0;
+        if (strpos($hit, self::SCRIPT_EXCLUDE_TAG)!==false){return true;}
+		
+		$c = 0;
         preg_replace($this->excludeList, '', $hit, -1, $c);
         return ($c > 0);
     }
