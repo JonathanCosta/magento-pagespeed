@@ -10,6 +10,7 @@
  * http://blog.gaiterjones.com/dropdev/magento/LICENSE.txt
  *
  * @category    PAJ
+ * @author		PAJ <modules@gaiterjones.com>
  * @package     PAJ_MinifyHTML
  * @copyright   Copyright (c) 2015 PAJ
  * @license     http://blog.gaiterjones.com/dropdev/magento/LICENSE.txt  The MIT License (MIT)
@@ -20,7 +21,10 @@ class Pagespeed_MinifyHTML_Model_Observer
 
     public function alterOutput($observer)
     {
-	
+		$helper = Mage::helper('minifyhtml/data');
+		
+		if (!$helper->isActive()){ return; }
+		
 		// retrieve html body
 		$response = $observer->getResponse();       
 		$html     = $response->getBody();
@@ -28,22 +32,18 @@ class Pagespeed_MinifyHTML_Model_Observer
 		
 		// do not minify json
 		if(substr($html, 0, 1) === '{') { return; }
-		
-		$helper = Mage::helper('minifyhtml/data');
-		
-		if ($helper->isActive())
-		{	
-			$timeStart = microtime(true);
 
-			// minify
-			$html=Pagespeed_MinifyHTML_Model_Minify::minify($html,array('jsCleanComments' => true));
-			// timestamp
-			$_timeStamp="\n".'<!-- +PS MIN_HTML '. date("d-m-Y H:i:s"). ' '. round(((microtime(true) - $timeStart) * 1000)). ' -->';
-			// send Response
-			$response->setBody($html.$_timeStamp);
+		$timeStart = microtime(true);
 
-			//Mage::log(round(((microtime(true) - $timeStart) * 1000)) . ' ms taken to minify html');			
-		}
+		// minify
+		$html=Pagespeed_MinifyHTML_Model_Minify::minify($html,array('jsCleanComments' => true));
+		// timestamp
+		$_timeStamp="\n".'<!-- +PS MIN_HTML '. date("d-m-Y H:i:s"). ' '. round(((microtime(true) - $timeStart) * 1000)). ' -->';
+		// send Response
+		$response->setBody($html.$_timeStamp);
+
+		//Mage::log(round(((microtime(true) - $timeStart) * 1000)) . ' ms taken to minify html');			
+
     }
 	
 	protected function sanitize($_html) {
