@@ -17,23 +17,26 @@
  */
 -->
 <config>
-	<acl>
-		<resources>
-			<admin>
-				<children>
-					<system>
-						<children>
-							<config>
-								<children>
-									<minifyhtml>
-										<title>Minify HTML</title>
-									</minifyhtml>
-								</children>
-							</config>
-						</children>
-					</system>
-				</children>
-			</admin>
-		</resources>
-	</acl>
+        <!--
+            config configuration permissions
+        -->
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <pagespeed>
+                                            <title>Pagespeed</title>
+                                        </pagespeed>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>	
 </config>
