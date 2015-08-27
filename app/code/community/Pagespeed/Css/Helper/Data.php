@@ -17,6 +17,7 @@ class Pagespeed_Css_Helper_Data extends Mage_Core_Helper_Abstract
     const PAGESPEED_CSS_ENABLED = 'pagespeed/css/enabled';
     const PAGESPEED_CSS_EXCLUDE_ENABLED = 'pagespeed/css/exclude_enabled';
     const PAGESPEED_CSS_EXCLUDE = 'pagespeed/css/exclude';
+	const PAGESPEED_LOGGEDIN_ENABLED = 'pagespeed/general/logged_in';
 
     /**
      * Is css module enabled ?
@@ -25,7 +26,9 @@ class Pagespeed_Css_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isEnabled()
     {
-        return Mage::getStoreConfigFlag(self::PAGESPEED_CSS_ENABLED);
+        if (!Mage::getStoreConfigFlag(self::PAGESPEED_LOGGEDIN_ENABLED) && Mage::getSingleton('customer/session')->isLoggedIn()) { return false; }
+		
+		return Mage::getStoreConfigFlag(self::PAGESPEED_CSS_ENABLED);
     }
 
     /**

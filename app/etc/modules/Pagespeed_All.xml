@@ -18,6 +18,10 @@
         <Pagespeed_MinifyHTML>
             <active>true</active>
             <codePool>community</codePool>
+		    <depends>
+                <Pagespeed_Js/>
+                <Pagespeed_Css/>
+            </depends>	
         </Pagespeed_MinifyHTML>
     </modules>
 </config>

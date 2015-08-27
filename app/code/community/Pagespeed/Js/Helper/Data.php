@@ -17,6 +17,7 @@ class Pagespeed_Js_Helper_Data extends Mage_Core_Helper_Abstract
     const PAGESPEED_JS_ENABLED = 'pagespeed/js/enabled';
     const PAGESPEED_JS_EXCLUDE_ENABLED = 'pagespeed/js/exclude_enabled';
     const PAGESPEED_JS_EXCLUDE = 'pagespeed/js/exclude';
+	const PAGESPEED_LOGGEDIN_ENABLED = 'pagespeed/general/logged_in';
 
     /**
      * Is js module enabled ?
@@ -25,7 +26,9 @@ class Pagespeed_Js_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isEnabled()
     {
-        return Mage::getStoreConfigFlag(self::PAGESPEED_JS_ENABLED);
+        if (!Mage::getStoreConfigFlag(self::PAGESPEED_LOGGEDIN_ENABLED) && Mage::getSingleton('customer/session')->isLoggedIn()) { return false; }
+		
+		return Mage::getStoreConfigFlag(self::PAGESPEED_JS_ENABLED);
     }
 
     /**

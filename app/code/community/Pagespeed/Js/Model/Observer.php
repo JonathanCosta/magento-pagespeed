@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2015 mediarox UG (haftungsbeschraenkt) (http://www.mediarox.de)
  * @author Steven Fritzsche <sfritzsche@mediarox.de>
  * @author Thomas Uhlig <tuhlig@mediarox.de>
+ * @author PAJ <paj@gaiterjones.com>
  */
 
 /**
@@ -15,7 +16,7 @@ class Pagespeed_Js_Model_Observer
      * @const string
      */
     const HTML_TAG_BODY = '</body>';
-	const SCRIPT_EXCLUDE_TAG='exclude_this';
+	//const SCRIPT_EXCLUDE_TAG='exclude_this';
 
     /**
      * Will finally contain all js tags to move.
@@ -56,7 +57,7 @@ class Pagespeed_Js_Model_Observer
      */
     protected function isHitExcluded($hit)
     {
-        if (strpos($hit, self::SCRIPT_EXCLUDE_TAG)!==false){return true;}
+        //if (strpos($hit, self::SCRIPT_EXCLUDE_TAG)!==false){return true;}
 		
 		$c = 0;
         preg_replace($this->excludeList, '', $hit, -1, $c);
@@ -125,7 +126,7 @@ class Pagespeed_Js_Model_Observer
         $closedBodyPosition = strripos($html, self::HTML_TAG_BODY);
         $html = substr_replace($html, $this->jsTags, $closedBodyPosition, 0);
 		
-		$_timeStamp="\n".'<!-- +PS MIN_HTML '. date("d-m-Y H:i:s"). ' '. round(((microtime(true) - $timeStart) * 1000)). ' -->';
+		$_timeStamp="\n".'<!-- +PS JS '. date("d-m-Y H:i:s"). ' '. round(((microtime(true) - $timeStart) * 1000)). 'ms -->';
 		
         $response->setBody($html.$_timeStamp);
 

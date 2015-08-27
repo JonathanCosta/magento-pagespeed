@@ -84,7 +84,8 @@ class Pagespeed_Css_Model_Observer
      */
     public function parseCssToBottom(Varien_Event_Observer $observer)
     {
-        //$timeStart = microtime(true);
+        $timeStart = microtime(true);
+		$_timeStamp='';
 
         // Step 1
         $helper = Mage::helper('pagespeed_css');
@@ -129,8 +130,11 @@ class Pagespeed_Css_Model_Observer
         // Step 9
         $closedBodyPosition = strripos($html, self::HTML_TAG_BODY);
         $html = substr_replace($html, $this->cssTags, $closedBodyPosition, 0);
-        $response->setBody($html);
-
+		
+		$_timeStamp="\n".'<!-- +PS CSS '. date("d-m-Y H:i:s"). ' '. round(((microtime(true) - $timeStart) * 1000)). 'ms -->';
+		
+        $response->setBody($html.$_timeStamp);
+		
         //Mage::log(round(((microtime(true) - $timeStart) * 1000)) . ' ms taken to parse Css to bottom');
     }
 }

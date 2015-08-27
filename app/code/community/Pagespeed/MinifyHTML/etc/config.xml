@@ -22,6 +22,39 @@
             <version>0.0.2</version>
         </Pagespeed_MinifyHTML>
     </modules>
+
+
+    <frontend>
+        <events>
+            <!--
+                Event before the response has been sent to browser
+            -->
+			
+            <controller_front_send_response_before>
+                <observers>
+                    <minifyhtml_response_before>
+                        <type>singleton</type>
+                        <class>minifyhtml/observer</class>
+                        <method>alterOutput</method>
+                    </minifyhtml_response_before>
+                </observers>
+            </controller_front_send_response_before>
+			
+			<!--
+			<http_response_send_before>
+				<observers>
+					<http_response_send_before_handler>
+						<type>model</type>
+						<class>minifyhtml/observer</class>
+						<method>alterOutput</method>
+						<args></args>
+					</http_response_send_before_handler>
+				</observers>
+			</http_response_send_before>	
+			-->			
+        </events>
+    </frontend>	
+	
     <global>
         <helpers>
             <minifyhtml>
@@ -34,18 +67,5 @@
             </minifyhtml>
         </models>
     </global>
-	<frontend>
-		<events>
-			<http_response_send_before>
-				<observers>
-					<http_response_send_before_handler>
-						<type>model</type>
-						<class>minifyhtml/observer</class>
-						<method>alterOutput</method>
-						<args></args>
-					</http_response_send_before_handler>
-				</observers>
-			</http_response_send_before>
-		</events>			
-	</frontend>	
+
 </config>

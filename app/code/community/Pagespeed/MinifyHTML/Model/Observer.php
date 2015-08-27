@@ -25,8 +25,15 @@ class Pagespeed_MinifyHTML_Model_Observer
 		
 		if (!$helper->isEnabled()){ return; }
 		
-		// retrieve html body
-		$response = $observer->getResponse();       
+
+		
+		// controller_front_send_response_before
+		$response = $observer->getFront()->getResponse();   
+		
+		// http_response_send_before
+		//$response = $observer->getResponse(); 
+
+		// get html body		
 		$html     = $response->getBody();
 
 		
@@ -34,11 +41,29 @@ class Pagespeed_MinifyHTML_Model_Observer
 		if(substr($html, 0, 1) === '{') { return; }
 
 		$timeStart = microtime(true);
+		$_timeStamp='';
+		
+		// get JS time stamp
+		if (preg_match("/(?<=". preg_quote("<!-- +PS JS ").").*?(?=". preg_quote(" -->").")/s", $html, $_result))
+		{
+			$_timeStamp.="\n".'<!-- +PS JS '. $_result[0]. ' -->';
+		}
+		// get CSS time stamp
+		if (preg_match("/(?<=". preg_quote("<!-- +PS CSS ").").*?(?=". preg_quote(" -->").")/s", $html, $_result))
+		{
+			$_timeStamp.="\n".'<!-- +PS CSS '. $_result[0]. ' -->';
+		}		
+		
+		// get FPC time stamp
+		//if (preg_match("/(?<=". preg_quote("<!-- +FPC ").").*?(?=". preg_quote(" -->").")/s", $html, $_result))
+		//{
+		//	$_timeStamp.="\n".'<!-- +FPC '. $_result[0]. ' -->';
+		//}		
 
 		// minify
 		$html=Pagespeed_MinifyHTML_Model_Minify::minify($html,array('jsCleanComments' => true));
 		// timestamp
-		$_timeStamp="\n".'<!-- +PS MIN_HTML '. date("d-m-Y H:i:s"). ' '. round(((microtime(true) - $timeStart) * 1000)). 'ms -->';
+		$_timeStamp.="\n".'<!-- +PS MIN_HTML '. date("d-m-Y H:i:s"). ' '. round(((microtime(true) - $timeStart) * 1000)). 'ms -->';
 		// send Response
 		$response->setBody($html.$_timeStamp);
 
