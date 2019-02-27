@@ -94,7 +94,8 @@ class Pagespeed_Js_Model_Observer
         if (!$helper->isEnabled()) return;
 
         // Step 2
-        $response = $observer->getFront()->getResponse();
+	//https://github.com/firewizard/pagespeed/commit/fb010ca984f0432fff3929e4f1c680fbfdee8f01
+        $response = $observer->getResponse();
         $html = $response->getBody();
         $this->excludeList = $helper->getExcludeList();
 
