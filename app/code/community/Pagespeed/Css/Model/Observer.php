@@ -113,6 +113,14 @@ class Pagespeed_Css_Model_Observer
             'self::processHit',
             $html
         );
+		
+	// Step 5b - links without text/css e.g added by addLinkRel in layout
+	//https://github.com/firewizard/pagespeed/commit/73b6f390615ed7f359c2f30b137fdb8a36792920
+        $html = preg_replace_callback(
+            '#<link[^>]*rel\=["\']stylesheet["\'][^>]*/>#isU',
+            'self::processHit',
+            $html
+        );
 
         // Step 6
         $html = preg_replace_callback(
